@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+    php-fpm:
+        container_name: php_fpm
+        hostname: php_fpm
+        env_file:
+            - ./.env
+            - ../.env
+        build:
+            context: ./php
+        volumes:
+            - ~/.ssh:/root/.ssh:ro
+            - ../:/var/www:cached
+            - ../vendor:/var/www/vendor:cached
+        ports:
+            - "8090:8080"
