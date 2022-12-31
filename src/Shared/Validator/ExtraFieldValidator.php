@@ -2,48 +2,48 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\ParamConverter\EventSubscriber;
+namespace App\Shared\Validator;
 
-use App\Shared\Exception\Trait\ApiExceptionTrait;
-use App\Shared\ParamConverter\Event\ParamConverterDeserializationEvent;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\ReadOnlyProperty;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
-
-class ExtraFieldValidatorSubscriber implements EventSubscriberInterface
+class ExtraFieldValidator extends ConstraintValidator
 {
-    use ApiExceptionTrait;
+    public const DEFAULT_EXCLUDE = [];
 
     private string $env;
 
-    public function __construct(#[Autowire('%env(APP_ENV)%')] string $env)
+    public function __construct(#[Autowire('%env(APP_ENV)%')] string $env, private readonly RequestStack $requestStack)
     {
         $this->env = $env;
     }
 
-    public static function getSubscribedEvents(): array
+    public function validate($value, Constraint $constraint): void
     {
-        return [
-            ParamConverterDeserializationEvent::class => ['onDeserialization'],
-        ];
-    }
+        if (!$constraint instanceof ExtraField) {
+            return;
+        }
 
-    public function onDeserialization(ParamConverterDeserializationEvent $event): void
-    {
-        $className = $event->getObjectClass();
-        $content = $event->getData();
+        $object = $this->context->getObject();
+        $data = $this->getRequestData();
+        if (!$data) {
+            return;
+        }
 
-        if ($this->env === 'dev' && isset($content['XDEBUG_SESSION_START'])) {
-            unset($content['XDEBUG_SESSION_START']);
+        $exclude = self::DEFAULT_EXCLUDE;
+        if ($this->env === 'dev' && isset($data['XDEBUG_SESSION_START'])) {
+            $exclude[] = 'XDEBUG_SESSION_START';
         }
 
         $deserializableProperties = [];
-        $reflectionClass = new \ReflectionClass($className);
+        $reflectionClass = new \ReflectionClass($object);
         $exclusionPolicy = $this->getExclusionPolicy($reflectionClass);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
@@ -53,16 +53,39 @@ class ExtraFieldValidatorSubscriber implements EventSubscriberInterface
             }
         }
 
-        $extraFields = array_diff(array_keys($content), $deserializableProperties);
+        $extraFields = array_diff(array_keys($data), $deserializableProperties, $exclude);
         if (count($extraFields) > 0) {
-            throw $this->createApiException(
-                status: Response::HTTP_BAD_REQUEST,
-                detail: 'Extra fields are not allowed',
-                arbitraryData: [
-                    'extraFields' => $extraFields,
-                ],
-            );
+            $this->context
+                ->buildViolation(ExtraField::EXTRA_FIELD)
+                ->setParameter('{{ extra_fields }}', implode(', ', $extraFields))
+                ->addViolation()
+            ;
         }
+    }
+
+    private function getRequestData(): array
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        if (!$request instanceof Request) {
+            return [];
+        }
+
+        $query = $request->query->all();
+        $body = $request->request->all();
+
+        return array_merge($query, $body);
+    }
+
+    private function getExclusionPolicy(\ReflectionClass $reflectionClass): ?string
+    {
+        $attributes = $reflectionClass->getAttributes(ExclusionPolicy::class);
+        if (empty($attributes)) {
+            return null;
+        }
+
+        $exclusionPolicyAttribute = $attributes[0];
+
+        return $exclusionPolicyAttribute->newInstance()->policy;
     }
 
     private function shouldDeserializeProperty(\ReflectionProperty $property, ?string $exclusionPolicy): bool
@@ -105,17 +128,5 @@ class ExtraFieldValidatorSubscriber implements EventSubscriberInterface
         });
 
         return !empty($excludeAttribute);
-    }
-
-    private function getExclusionPolicy(\ReflectionClass $reflectionClass): ?string
-    {
-        $attributes = $reflectionClass->getAttributes(ExclusionPolicy::class);
-        if (empty($attributes)) {
-            return null;
-        }
-
-        $exclusionPolicyAttribute = $attributes[0];
-
-        return $exclusionPolicyAttribute->newInstance()->policy;
     }
 }

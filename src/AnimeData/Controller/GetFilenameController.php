@@ -29,7 +29,9 @@ class GetFilenameController extends AbstractController
     #[ParamConverter(
         data: 'query',
         class: FilenameQuery::class,
-        options: ['validator' => ['groups' => ['Default']]],
+        options: [
+            'validator' => ['groups' => ['Default']],
+        ],
         converter: 'app.query'
     )]
     #[OA\Schema(ref: new Model(type: FilenameQuery::class))]

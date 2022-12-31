@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\ParamConverter\Converter;
 
-use App\Shared\ParamConverter\Event\ParamConverterDeserializationEvent;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -20,7 +18,6 @@ class QueryParamConverter implements ParamConverterInterface
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly EventDispatcherInterface $dispatcher,
     ) {}
 
     public function apply(Request $request, ParamConverter $configuration): bool
@@ -29,23 +26,20 @@ class QueryParamConverter implements ParamConverterInterface
         $content = $request->query->all();
         $objectClass = $configuration->getClass();
         $deserializationContext = new DeserializationContext();
-        $groups = $configuration->getOptions()['groups'] ?? [];
-        $deserializationContext->setGroups(['Default']);
-
-        $this->dispatcher->dispatch(new ParamConverterDeserializationEvent($objectClass, $content));
+        $serializerGroups = ['Default'];
+        $deserializationContext->setGroups($serializerGroups);
 
         $object = $this->serializer->deserialize(json_encode($content), $objectClass, 'json', $deserializationContext);
         $request->attributes->set($convertVarName, $object);
 
-        $groups = ['Default'];
+        $validatorGroups = ['Default'];
         $options = $configuration->getOptions();
         if (isset($options['validator']['groups'])) {
-            $groups = $options['validator']['groups'];
+            $validatorGroups = $options['validator']['groups'];
         }
 
-        $errors = $this->validator->validate($object, null, $groups);
+        $errors = $this->validator->validate($object, null, $validatorGroups);
         $request->attributes->set('validationErrors', $errors);
-
 
         return true;
     }

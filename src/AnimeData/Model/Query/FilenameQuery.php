@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\AnimeData\Model\Query;
 
+use App\Shared\Validator\ExtraField;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ExtraField]
 class FilenameQuery
 {
     public const TYPE_BASENAME = 'basename';
