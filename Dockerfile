@@ -20,10 +20,10 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-completions
 
-COPY ./config/.p10k.zsh /root/.p10k.zsh
-COPY ./config/.zshrc /root/.zshrc
-COPY ./config/php.ini /usr/local/etc/php/conf.d/zz-php.ini
-COPY ./config/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./docker/php/config/.p10k.zsh /root/.p10k.zsh
+COPY ./docker/php/config/.zshrc /root/.zshrc
+COPY ./docker/php/config/php.ini /usr/local/etc/php/conf.d/zz-php.ini
+COPY ./docker/php/config/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN echo 'pm.max_children = 15' >> /usr/local/etc/php-fpm.d/zz-docker.conf && \
     echo 'pm.max_requests = 500' >> /usr/local/etc/php-fpm.d/zz-docker.conf

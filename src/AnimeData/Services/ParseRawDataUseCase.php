@@ -135,6 +135,11 @@ class ParseRawDataUseCase
 
         if ($result) {
             $season = preg_replace('/[^0-9]/', '', ArrayPropertyUtil::getProperty($result, 0));
+            $singleDigitSeason = strlen($season) === 1;
+            $hasPrefix = str_starts_with($season, '0');
+            if ($singleDigitSeason && !$hasPrefix) {
+                $season = '0' . $season;
+            }
         }
 
         $movieInfo->setSeason($season);
@@ -154,8 +159,9 @@ class ParseRawDataUseCase
 
         if ($result) {
             $season = preg_replace('/[^0-9]/', '', ArrayPropertyUtil::getProperty($result, 0));
+            $singleDigitSeason = strlen($season) === 1;
             $hasPrefix = str_starts_with($season, '0');
-            if (!$hasPrefix) {
+            if ($singleDigitSeason && !$hasPrefix) {
                 $season = '0' . $season;
             }
 
@@ -178,6 +184,11 @@ class ParseRawDataUseCase
 
         if ($episode) {
             $episode = preg_replace('/[^0-9]/', '', $episode);
+            $singleDigitSeason = strlen($episode) === 1;
+            $hasPrefix = str_starts_with($episode, '0');
+            if ($singleDigitSeason && !$hasPrefix) {
+                $episode = '0' . $episode;
+            }
         }
 
         $movieInfo->setEpisode($episode);

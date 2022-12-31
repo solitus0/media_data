@@ -1,23 +1,28 @@
 # About
-PHP application which sanitizes anime filenames.
 
-## Docker
+PHP application which sanitizes anime title from dirty filenames.
+For example, input `[Subsplease] Shingeki no Kyojin - 01 (1080P) [3E953c31].mkv` will be converted
+to `Attack on Titan E01.mkv`.
 
 ```bash
-docker build -t sol0/animefilename ./docker/php
-docker run -p 8090:8090 sol0/animefilename
+curl -X 'GET' \
+  'http://127.0.0.1:8090/api/v1/anime/filename?rawName=%5BSubsplease%5D%20Shingeki%20no%20Kyojin%20-%2001%20%281080P%29%20%5B3E953c31%5D.mkv&type=path' \
+  -H 'accept: application/json'
 ```
 
 ## Docs
 
 ```bash
-http://127.0.0.1/api/doc
+http://127.0.0.1:8090/api/doc
 ```
 
-## Usage
+## Docker-compose
 
 ```bash
-curl -X 'GET' \
-  'http://127.0.0.1/api/v1/anime/filename?rawName=%5BSubsplease%5D%20Akuyaku%20Reijou%20Nanode%20Last%20Boss%20Wo%20Kattemimashita%20-%2001%20%281080P%29%20%5B3E953c31%5D.mkv' \
-  -H 'accept: application/json'
+    media_data:
+        image: ghcr.io/solitus0/media_data:main
+        container_name: media_data
+        restart: unless-stopped
+        ports:
+            - "8090:8090"
 ```
