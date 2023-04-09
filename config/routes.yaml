@@ -1,5 +1,18 @@
 controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/AnimeData/Controller/
+        namespace: App\AnimeData\Controller
     type: attribute
+
+general:
+    resource:
+        path: ../src/General/Controller/
+        namespace: App\General\Controller
+    type: attribute
+
+homepage:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /api/doc
+        permanent: true

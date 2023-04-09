@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    media_data:
+        container_name: media_data
+        hostname: media_data
+        restart: unless-stopped
+        build:
+            context: ..
+            target: app
+        ports:
+            - "8090:80"
+        volumes:
+            - ~/.ssh:/root/.ssh:ro

@@ -1,0 +1,42 @@
+
+-
+    request:
+        method: POST
+        url: 'https://graphql.anilist.co'
+        headers:
+            Host: graphql.anilist.co
+            Expect: ''
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            Content-Type: application/json
+            Accept: ''
+        body: '{"query":"query {\nMedia(search: \"One Piece\" type: ANIME) {\nid\nidMal\nformat\ntype\ngenres\ndescription\nepisodes\nseasonYear\nduration\nisAdult\ncountryOfOrigin\ntags {\nname\nrank\n}\ntitle {\nromaji\nenglish\nnative\n}\n}\n}","variables":{}}'
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Fri, 30 Dec 2022 12:26:20 GMT'
+            Content-Type: application/json
+            Transfer-Encoding: chunked
+            Connection: keep-alive
+            Cache-Control: 'no-cache, private'
+            X-RateLimit-Limit: '90'
+            X-RateLimit-Remaining: '89'
+            Set-Cookie: 'laravel_session=AUwqpj4OIzlYGxYo927bf4seAtC2T7lIdoLSOW8E; expires=Sat, 31-Dec-2022 00:26:20 GMT; Max-Age=43200; path=/; httponly'
+            X-Frame-Options: SAMEORIGIN
+            X-XSS-Protection: '1; mode=block'
+            X-Content-Type-Options: nosniff
+            Access-Control-Allow-Origin: '*'
+            Access-Control-Allow-Methods: 'GET, POST, OPTIONS'
+            Access-Control-Allow-Headers: 'Authorization,Accept,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range'
+            Access-Control-Expose-Headers: 'X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Content-Length, Content-Range'
+            CF-Cache-Status: DYNAMIC
+            Report-To: '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=CUIWD6HOC8uS19wXi2AvRipL4OuO2m1AxRWrlBaECvBGNuZPuv%2FFPAaj9%2FxCK%2Bh%2BV1dyJlBxTpBFDq7bNYg%2BIjILKGUCQru7xj%2FMiTo%2BrMiVVCUeVj9uoA%2BOPMeH%2BiDsjErMlw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            NEL: '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+            Server: cloudflare
+            CF-RAY: 781ac367898bc037-VNO
+        body: '{"data":{"Media":{"id":21,"idMal":21,"format":"TV","type":"ANIME","genres":["Action","Adventure","Comedy","Drama","Fantasy"],"description":"Gold Roger was known as the Pirate King, the strongest and most infamous being to have sailed the Grand Line. The capture and death of Roger by the World Government brought a change throughout the world. His last words before his death revealed the location of the greatest treasure in the world, One Piece. It was this revelation that brought about the Grand Age of Pirates, men who dreamed of finding One Piece (which promises an unlimited amount of riches and fame), and quite possibly the most coveted of titles for the person who found it, the title of the Pirate King.<br><br>\nEnter Monkey D. Luffy, a 17-year-old boy that defies your standard definition of a pirate. Rather than the popular persona of a wicked, hardened, toothless pirate who ransacks villages for fun, Luffy\u2019s reason for being a pirate is one of pure wonder; the thought of an exciting adventure and meeting new and intriguing people, along with finding One Piece, are his reasons of becoming a pirate. Following in the footsteps of his childhood hero, Luffy and his crew travel across the Grand Line, experiencing crazy adventures, unveiling dark mysteries and battling strong enemies, all in order to reach One Piece.<br><br>\n<b>*This includes following special episodes:<\/b><br>\n- Chopperman to the Rescue! Protect the TV Station by the Shore! (Episode 336)<br>\n- The Strongest Tag-Team! Luffy and Toriko''s Hard Struggle! (Episode 492)<br>\n- Team Formation! Save Chopper (Episode 542)<br>\n- History''s Strongest Collaboration vs. Glutton of the Sea (Episode 590)<br>\n- 20th Anniversary! Special Romance Dawn (Episode 907)","episodes":null,"seasonYear":1999,"duration":24,"isAdult":false,"countryOfOrigin":"JP","tags":[{"name":"Pirates","rank":98},{"name":"Shounen","rank":93},{"name":"Ensemble Cast","rank":93},{"name":"Super Power","rank":90},{"name":"Travel","rank":90},{"name":"Tragedy","rank":88},{"name":"Found Family","rank":85},{"name":"Ships","rank":82},{"name":"Male Protagonist","rank":81},{"name":"Conspiracy","rank":80},{"name":"Slavery","rank":80},{"name":"Time Skip","rank":80},{"name":"Slapstick","rank":79},{"name":"War","rank":75},{"name":"Politics","rank":75},{"name":"Asexual","rank":72},{"name":"Crime","rank":70},{"name":"Swordplay","rank":70},{"name":"Gods","rank":70},{"name":"Lost Civilization","rank":69},{"name":"Henshin","rank":67},{"name":"Anti-Hero","rank":65},{"name":"Primarily Adult Cast","rank":63},{"name":"Skeleton","rank":61},{"name":"Shapeshifting","rank":61},{"name":"Animals","rank":61},{"name":"Cyborg","rank":60},{"name":"Dystopian","rank":60},{"name":"Guns","rank":58},{"name":"Anachronism","rank":58},{"name":"Super Robot","rank":56},{"name":"Espionage","rank":56},{"name":"Fugitive","rank":56},{"name":"Robots","rank":55},{"name":"Primarily Male Cast","rank":54},{"name":"Kuudere","rank":53},{"name":"Ninja","rank":52},{"name":"Gender Bending","rank":50},{"name":"Medicine","rank":50},{"name":"Battle Royale","rank":48},{"name":"Assassins","rank":48},{"name":"Mermaid","rank":48},{"name":"Dinosaurs","rank":47},{"name":"Coming of Age","rank":47},{"name":"Time Manipulation","rank":46},{"name":"Adoption","rank":44},{"name":"Drugs","rank":42},{"name":"Samurai","rank":40},{"name":"Trains","rank":40},{"name":"Dragons","rank":40},{"name":"Food","rank":40},{"name":"Transgender","rank":38},{"name":"Body Swapping","rank":38},{"name":"Tanned Skin","rank":33},{"name":"Zombie","rank":31},{"name":"Clone","rank":26},{"name":"Monster Boy","rank":20},{"name":"Monster Girl","rank":20}],"title":{"romaji":"ONE PIECE","english":"ONE PIECE","native":"ONE PIECE"}}}}'
+        curl_info:
+            url: 'https://graphql.anilist.co/'
+    index: 0
