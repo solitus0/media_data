@@ -83,6 +83,13 @@ class GetFilenameControllerTest extends BaseWebTestCase
                 'expectedFolderName' => 'Vinland Saga/S02',
                 'folderNamePriority' => false,
             ],
+            'dataset7' => [
+                'rawName' => '/data/Anime Series FHD/[SubsPlease] Yamada-kun to Lv999 no Koi wo Suru - 02 (1080p) [87B60A90].mkv',
+                'format' => 'series',
+                'expectedFileName' => 'Yamada kun to Lv999 no Koi wo Suru E02.mkv',
+                'expectedFolderName' => 'Yamada kun to Lv999 no Koi wo Suru',
+                'folderNamePriority' => false,
+            ],
         ];
     }
 }

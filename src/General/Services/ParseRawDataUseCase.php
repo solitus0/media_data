@@ -21,9 +21,8 @@ class ParseRawDataUseCase
 
         $baseName = preg_replace('/\[[^\]]*\]/', '', $query->getBasename());
         $baseName = preg_replace('/\((?!(19|20)\d{2})[^\)]*\)/', '', $baseName);
-        $baseName = preg_replace('/(240|360|480|720|1080|2160|4320)p/', '', $baseName);
-        $baseName = preg_replace('/(full hd|hd|4k|uhd)/', '', $baseName);
-        $baseName = preg_replace('/(bluray|dvd|dvdrip|hdrip|webrip|web-dl|webdl|web)/i', '', $baseName);
+        $baseName = preg_replace('/(240|360|480|720|1080|2160|4320)p?/', '', $baseName);
+        $baseName = preg_replace('/(full hd|hd|4k|uhd|bluray|dvd|dvdrip|hdrip|webrip|web-dl|webdl|web)/i', '', $baseName);
         $baseName = preg_replace('/(x264|x265|xvid|divx|hevc|h264|h265|h.264|h.265)/i', '', $baseName);
         $baseName = preg_replace('/(ass|srt|sub|subrip|subtitles)/i', '', $baseName);
 
@@ -191,7 +190,7 @@ class ParseRawDataUseCase
         $result = [];
         preg_match('/e\d{1,4}/i', $rawMovieName, $result);
         if (!$result) {
-            preg_match('/(?<![s\d])\d{1,4}/i', $rawMovieName, $result);
+            preg_match('/(?<![s\d])\W\d{1,4}/i', $rawMovieName, $result);
         }
 
         $episode = ArrayPropertyUtil::getProperty($result, 0);
@@ -220,7 +219,7 @@ class ParseRawDataUseCase
     {
         $rawMovieName = preg_replace('/season\s{0,1}-?\s{0,1}\d{1,4}/i', '', $rawMovieName);
 
-        return preg_replace('/(s\d{1,2}e\d{1,4}|e\d{1,4}|\d{1,4}).*/i', '', $rawMovieName);
+        return preg_replace('/(s\d{1,2}e\d{1,4}|e\d{1,4}|\W\d{1,4}).*/i', '', $rawMovieName);
     }
 
     private function removeFromYear(string $rawMovieName): string

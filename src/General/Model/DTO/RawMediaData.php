@@ -120,18 +120,8 @@ class RawMediaData
         return $this;
     }
 
-    public function isFolderNamePriority(): ?bool
-    {
-        return $this->folderNamePriority;
-    }
-
     public function setFolderNamePriority(?bool $folderNamePriority): void
     {
         $this->folderNamePriority = $folderNamePriority;
-    }
-
-    public function shouldPrioritiseFolderName(): bool
-    {
-        return $this->isFolderNamePriority() && $this->getFolder();
     }
 }
